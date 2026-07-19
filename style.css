@@ -380,6 +380,60 @@ section > .section-lead {
 
 .contact-row a:hover { color: var(--accent); }
 
+/* 自由セクション(editor.htmlで追加)のブロック */
+.cs-heading {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 6px 0 10px;
+  color: #12172a;
+}
+
+.cs-text {
+  font-size: 14px;
+  line-height: 1.95;
+  color: #33394a;
+  margin: 0 0 12px;
+}
+
+.cs-text a {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+
+.cs-image { margin: 14px 0; }
+
+.cs-image img {
+  max-width: 100%;
+  border-radius: 14px;
+  display: block;
+}
+
+.cs-caption {
+  font-size: 12.5px;
+  color: #9aa1af;
+  margin-top: 8px;
+}
+
+.cs-divider {
+  border: none;
+  border-top: 1.5px dashed #c9d3e6;
+  margin: 20px 0;
+}
+
+.cs-button {
+  display: inline-block;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: #fff;
+  background: var(--accent);
+  padding: 10px 22px;
+  border-radius: 999px;
+  transition: transform 0.2s ease;
+}
+
+.cs-button:hover { transform: scale(1.05); }
+
 /* 地域カードグリッド(トップページ) */
 .region-grid {
   display: grid;
