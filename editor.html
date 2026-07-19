@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サイト編集ツール | 地域研究愛好会</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #1d4ed8;
+    --bg: #f5f7fb;
+    --border: #e2e6ef;
+    --text: #161c2c;
+    --muted: #6b7280;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  header h1 { margin: 0 0 4px; font-size: 18px; }
+  header p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .layout {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 20px 16px 80px;
+  }
+
+  .step-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  .step-box h2 {
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+  .step-box p {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 10px;
+  }
+  .file-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .file-input-row label.file-btn {
+    display: inline-block;
+    background: #eef3fc;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid #cfe0fb;
+  }
+  .file-input-row input[type=file] { display: none; }
+  .status-tag {
+    font-size: 12.5px;
+    color: #16a34a;
+    font-weight: 700;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    font-size: 14px;
+    margin: 0 0 4px;
+    color: var(--accent);
+  }
+  .card .card-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  label.field-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--muted);
+    margin: 12px 0 4px;
+  }
+  input[type=text], textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 13.5px;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fbfcfe;
+    resize: vertical;
+  }
+  textarea { min-height: 56px; line-height: 1.6; }
+  input[type=text]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+  }
+
+  .list-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: #fbfcfe;
+    position: relative;
+  }
+  .list-item .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 11.5px;
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 3px 9px;
+    cursor: pointer;
+  }
+  .add-btn {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    background: #eef3fc;
+    border: 1px solid #cfe0fb;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
+  .region-select {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .region-select button {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .region-select button.active {
+    background: #12172a;
+    color: #fff;
+    border-color: #12172a;
+  }
+
+  .download-bar {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin: 0 -16px;
+  }
+  .dl-btn {
+    background: var(--accent);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 11px 22px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .dl-btn.secondary {
+    background: #fff;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🛠 サイト編集ツール</h1>
+  <p>地域研究愛好会のホームページを、コードを見ずにフォームで編集するためのツールです。</p>
+</header>
+
+<div class="layout">
+
+  <div class="step-box">
+    <h2>① まず、いまのサイトのデータを読み込む</h2>
+    <p>サイトのフォルダにある <code>site-data.js</code> と <code>research-data.js</code> を選んでください。読み込むと、現在の内容がこのツールに反映されます。(初めて使うときはこの手順は飛ばして、そのまま②に進んでもOKです)</p>
+    <div class="file-input-row">
+      <label class="file-btn">site-data.js を選ぶ<input type="file" id="load-site" accept=".js"></label>
+      <label class="file-btn">research-data.js を選ぶ<input type="file" id="load-research" accept=".js"></label>
+      <span class="status-tag" id="load-status"></span>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <h2>② フォームで内容を編集する</h2>
+    <p>下のタブから編集したい場所を選んで、テキストを書き換えたり、項目を追加・削除したりしてください。</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="home">ホームページ</button>
+    <button class="tab-btn" data-tab="regions">地域ページの紹介文</button>
+    <button class="tab-btn" data-tab="research">研究一覧</button>
+  </div>
+
+  <!-- ================= HOME TAB ================= -->
+  <div class="panel active" id="panel-home">
+
+    <div class="card">
+      <h3>トップのメッセージ</h3>
+      <p class="card-desc">ページ最上部、大きく表示される部分です。</p>
+      <label class="field-label">見出し上のラベル(英字)</label>
+      <input type="text" id="hero-eyebrow">
+      <label class="field-label">大見出し</label>
+      <textarea id="hero-title"></textarea>
+      <label class="field-label">説明文</label>
+      <textarea id="hero-body"></textarea>
+    </div>
+
+    <div class="card">
+      <h3>お知らせ</h3>
+      <p class="card-desc">日付とタイトルのセットです。新しいお知らせは「追加」で増やせます。</p>
+      <div id="news-items"></div>
+      <button class="add-btn" onclick="addNewsItem()">＋ お知らせを追加</button>
+    </div>
+
+    <div class="card">
+      <h3>サークル概要</h3>
+      <label class="field-label">紹介文</label>
+      <textarea id="overview-lead"></textarea>
+      <label class="field-label">「例えば…」の具体例</label>
+      <div id="overview-examples"></div>
+      <button class="add-btn" onclick="addExample()">＋ 具体例を追加</button>
+    </div>
+
+    <div class="card">
+      <h3>活動内容(3本柱)</h3>
+      <p class="card-desc">「発見・探求・発信」のような3つの柱を紹介する部分です。</p>
+      <div id="pillars"></div>
+    </div>
+
+    <div class="card">
+      <h3>そのほかの活動アイデア</h3>
+      <div id="extras"></div>
+      <button class="add-btn" onclick="addExtra()">＋ アイデアを追加</button>
+    </div>
+
+    <div class="card">
+      <h3>募集の一言</h3>
+      <textarea id="activities-note"></textarea>
+    </div>
+
+    <div class="card">
+      <h3>参加案内</h3>
+      <textarea id="join-note"></textarea>
+    </div>
+
+    <div class="card">
+      <h3>お問い合わせ先</h3>
+      <div id="contacts"></div>
+      <button class="add-btn" onclick="addContact()">＋ 連絡先を追加</button>
+    </div>
+
+  </div>
+
+  <!-- ================= REGIONS TAB ================= -->
+  <div class="panel" id="panel-regions">
+    <div class="card">
+      <h3>地域ページの紹介文</h3>
+      <p class="card-desc">各地域ページの上部に表示される、タイトルと紹介文です。トップページの「活動地域」カードの説明文も一緒に編集できます。</p>
+      <div class="region-select" id="region-tabs"></div>
+      <div id="region-form"></div>
+    </div>
+  </div>
+
+  <!-- ================= RESEARCH TAB ================= -->
+  <div class="panel" id="panel-research">
+    <div class="card">
+      <h3>研究一覧</h3>
+      <p class="card-desc">各地域ページに表示される、研究のタイトル・説明・リンク先です。研究ページは別のホームページビルダーで作ったものでOK、そのURLをここに貼ってください。</p>
+      <div class="region-select" id="research-region-tabs"></div>
+      <div id="research-form"></div>
+      <button class="add-btn" onclick="addResearchItem()">＋ この地域に研究を追加</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="download-bar">
+  <button class="dl-btn secondary" onclick="downloadFile('site-data.js', buildSiteDataJs())">site-data.js をダウンロード</button>
+  <button class="dl-btn" onclick="downloadFile('research-data.js', buildResearchDataJs())">research-data.js をダウンロード</button>
+</div>
+
+<script>
+// ============================================================
+// 初期データ(現在サイトに入っている内容と同じもの)
+// ============================================================
+let siteData = {
+  hero: {
+    eyebrow: "Area Studies",
+    title: "世界の地域を、学び・比べ・語り合う。",
+    body: "地域研究愛好会は、アジア・オセアニア・ヨーロッパ・アフリカ・アメリカの歴史や社会、文化を比較しながら学ぶサークルです。各地域のページから、メンバーが取り組んでいる研究の一覧を見ることができます。"
+  },
+  news: [
+    { date: "7/3", title: "ホームページ開設いたしました" }
+  ],
+  overview: {
+    lead: "地域研究愛好会(ASC)では、日本や世界の地域に対する見識を互いに深め、好奇心を刺激しあえるコミュニティの形成を目指します。各々の興味関心に従い、未知の世界を切り拓く意欲がある方を歓迎します。",
+    examples: [
+      "自分のあまり知らなかった日本や世界の地域について、特徴や魅力を知る!",
+      "ねぶた祭りはそもそもどのような意味があるのか、また起源は何か分析する!",
+      "インドネシアでは実はアラビア語も使われている?! 暮らしにおけるイスラームの関わりについて探求する!",
+      "インド文化とイスラーム文化の混ざり合うウルドゥー語の魅力とは何か、言語を学んで探求する",
+      "フィリピン・マニラの貧困状態の解決策を考察するため、現地に出向くとともに、データなどをもとに社会的現状を分析する"
+    ]
+  },
+  activities: {
+    pillars: [
+      { kicker: "たのしく", label: "発見", body: "世界にはどんな景色・街並み・文化があるか、地理推理ゲームのGeoGuessrを通して発見しよう。また、外部のプレゼンターによる「ミニ講演会」を通して現地のリアルを探ろう!" },
+      { kicker: "個人or グループで", label: "探求", body: "興味関心に従って自由にテーマを設定し、個人またはグループで様々な方法を通じて「ミニ研究」をしよう!" },
+      { kicker: "様々な方法で", label: "発信", body: "SNSでの投稿やミニ発表会を通して、研究の成果を発表しよう!また、オリジナルグッズ販売など様々な方法で、周囲を巻き込み楽しく発信しよう!" }
+    ],
+    extra: [
+      { lead: "講師をよんで", highlight: "外国語をみんなで学んでみたり…" },
+      { lead: "みんなで", highlight: "外国料理をつくってみたり…" },
+      { lead: "スタディーツアーなんかもできそう!", highlight: "現地を学ぶためみんなで海外に行っちゃったり…?!" }
+    ],
+    note: "具体的な活動内容については検討中につき、アイデアを募集しています。アイデアのある方、あるいは参加希望または活動に興味のある方は、DMまたはキャプションのフォームからお気軽にご連絡ください!"
+  },
+  join: {
+    note: "今後、本格的な活動開始に向け「プレ定例会」などの実施を予定しています。ぜひ当アカウントをフォローしてお待ちください!"
+  },
+  contact: [
+    { label: "Email", value: "contact@areastudies.example", url: "mailto:contact@areastudies.example" },
+    { label: "X (Twitter)", value: "@areastudies_club", url: "#" },
+    { label: "Instagram", value: "@areastudies.club", url: "#" }
+  ],
+  regionCards: {
+    asia:    { title: "アジア",       desc: "東アジア・東南アジア・南アジアの歴史的背景や現代社会の動きを比較しながら学びます。" },
+    oceania: { title: "オセアニア",   desc: "島嶼国家群の文化的多様性と、先住民族の伝統・現代における課題を扱います。" },
+    europe:  { title: "ヨーロッパ",   desc: "国家間の統合と多様な国民文化の共存という視点から、政治・社会・文化を横断的に学びます。" },
+    africa:  { title: "アフリカ",     desc: "多様な民族・言語・歴史を持つ大陸を、植民地史から現代の開発課題まで幅広く扱います。" },
+    america: { title: "アメリカ",     desc: "北米・中南米を対象に、移民社会の形成や地域統合、文化的多様性について学びます。" }
+  },
+  regionHero: {
+    asia:    { en: "ASIA",    jp: "アジア",     intro: "東アジア・東南アジア・南アジアを中心に、歴史的背景や現代社会の動きを比較しながら学びます。" },
+    oceania: { en: "OCEANIA", jp: "オセアニア", intro: "島嶼国家群の文化的多様性と、先住民族の伝統・現代における課題を扱います。" },
+    europe:  { en: "EUROPE",  jp: "ヨーロッパ", intro: "国家間の統合と多様な国民文化の共存という視点から、政治・社会・文化を横断的に学びます。" },
+    africa:  { en: "AFRICA",  jp: "アフリカ",   intro: "多様な民族・言語・歴史を持つ大陸を、植民地史から現代の開発課題まで幅広く扱います。" },
+    america: { en: "AMERICA", jp: "アメリカ",   intro: "北米・中南米を対象に、移民社会の形成や地域統合、文化的多様性について学びます。" }
+  }
+};
+
+let researchData = {
+  asia: [
+    { title: "東アジアの近代化と都市発展", desc: "明治期以降の東アジア各国における都市化プロセスの比較研究", url: "https://example.com/research/asia-modernization" }
+  ],
+  oceania: [],
+  europe: [],
+  africa: [],
+  america: []
+};
+
+const REGION_KEYS = ["asia", "oceania", "europe", "africa", "america"];
+const REGION_LABELS = { asia: "アジア", oceania: "オセアニア", europe: "ヨーロッパ", africa: "アフリカ", america: "アメリカ" };
+let currentRegionTab = "asia";
+let currentResearchTab = "asia";
+
+// ============================================================
+// タブ切り替え
+// ============================================================
+document.querySelectorAll(".tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ============================================================
+// ファイル読み込み(既存の site-data.js / research-data.js)
+// ============================================================
+function loadJsFile(inputEl, globalName, onLoaded) {
+  inputEl.addEventListener("change", () => {
+    const file = inputEl.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const fn = new Function("window", reader.result + "; return window." + globalName + ";");
+        const fakeWindow = {};
+        const result = fn(fakeWindow);
+        if (result) {
+          onLoaded(result);
+          document.getElementById("load-status").textContent = "読み込みました ✓";
+        }
+      } catch (e) {
+        alert("読み込みに失敗しました。ファイルの中身が壊れていないか確認してください。\n" + e.message);
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
+loadJsFile(document.getElementById("load-site"), "SITE_DATA", (data) => {
+  siteData = data;
+  renderAll();
+});
+loadJsFile(document.getElementById("load-research"), "RESEARCH_DATA", (data) => {
+  researchData = data;
+  renderResearchForm();
+});
+
+// ============================================================
+// ホームタブ描画
+// ============================================================
+function renderAll() {
+  document.getElementById("hero-eyebrow").value = siteData.hero.eyebrow;
+  document.getElementById("hero-title").value = siteData.hero.title;
+  document.getElementById("hero-body").value = siteData.hero.body;
+  document.getElementById("overview-lead").value = siteData.overview.lead;
+  document.getElementById("activities-note").value = siteData.activities.note;
+  document.getElementById("join-note").value = siteData.join.note;
+
+  renderNewsItems();
+  renderExamples();
+  renderPillars();
+  renderExtras();
+  renderContacts();
+  renderRegionTabs();
+  renderResearchRegionTabs();
+  renderResearchForm();
+}
+
+function bindInput(id, obj, key) {
+  document.getElementById(id).addEventListener("input", (e) => { obj[key] = e.target.value; });
+}
+
+function renderNewsItems() {
+  const el = document.getElementById("news-items");
+  el.innerHTML = "";
+  siteData.news.forEach((item, i) => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML =
+      '<button class="remove-btn" onclick="removeNews(' + i + ')">削除</button>' +
+      '<label class="field-label">日付</label><input type="text" data-i="' + i + '" data-f="date" class="news-date-input">' +
+      '<label class="field-label">タイトル</label><input type="text" data-i="' + i + '" data-f="title" class="news-title-input">';
+    el.appendChild(div);
+    div.querySelector(".news-date-input").value = item.date;
+    div.querySelector(".news-title-input").value = item.title;
+    div.querySelector(".news-date-input").addEventListener("input", (e) => { siteData.news[i].date = e.target.value; });
+    div.querySelector(".news-title-input").addEventListener("input", (e) => { siteData.news[i].title = e.target.value; });
+  });
+}
+function addNewsItem() { siteData.news.push({ date: "", title: "" }); renderNewsItems(); }
+function removeNews(i) { siteData.news.splice(i, 1); renderNewsItems(); }
+
+function renderExamples() {
+  const el = document.getElementById("overview-examples");
+  el.innerHTML = "";
+  siteData.overview.examples.forEach((text, i) => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML =
+      '<button class="remove-btn" onclick="removeExample(' + i + ')">削除</button>' +
+      '<textarea class="ex-input"></textarea>';
+    el.appendChild(div);
+    div.querySelector(".ex-input").value = text;
+    div.querySelector(".ex-input").addEventListener("input", (e) => { siteData.overview.examples[i] = e.target.value; });
+  });
+}
+function addExample() { siteData.overview.examples.push(""); renderExamples(); }
+function removeExample(i) { siteData.overview.examples.splice(i, 1); renderExamples(); }
+
+function renderPillars() {
+  const el = document.getElementById("pillars");
+  el.innerHTML = "";
+  siteData.activities.pillars.forEach((p, i) => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML =
+      '<label class="field-label">短いラベル(例: たのしく)</label><input type="text" class="p-kicker">' +
+      '<label class="field-label">見出し(例: 発見)</label><input type="text" class="p-label">' +
+      '<label class="field-label">説明文</label><textarea class="p-body"></textarea>';
+    el.appendChild(div);
+    div.querySelector(".p-kicker").value = p.kicker;
+    div.querySelector(".p-label").value = p.label;
+    div.querySelector(".p-body").value = p.body;
+    div.querySelector(".p-kicker").addEventListener("input", (e) => { siteData.activities.pillars[i].kicker = e.target.value; });
+    div.querySelector(".p-label").addEventListener("input", (e) => { siteData.activities.pillars[i].label = e.target.value; });
+    div.querySelector(".p-body").addEventListener("input", (e) => { siteData.activities.pillars[i].body = e.target.value; });
+  });
+}
+
+function renderExtras() {
+  const el = document.getElementById("extras");
+  el.innerHTML = "";
+  siteData.activities.extra.forEach((ex, i) => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML =
+      '<button class="remove-btn" onclick="removeExtra(' + i + ')">削除</button>' +
+      '<label class="field-label">前置き(例: みんなで)</label><input type="text" class="e-lead">' +
+      '<label class="field-label">内容</label><input type="text" class="e-highlight">';
+    el.appendChild(div);
+    div.querySelector(".e-lead").value = ex.lead;
+    div.querySelector(".e-highlight").value = ex.highlight;
+    div.querySelector(".e-lead").addEventListener("input", (e) => { siteData.activities.extra[i].lead = e.target.value; });
+    div.querySelector(".e-highlight").addEventListener("input", (e) => { siteData.activities.extra[i].highlight = e.target.value; });
+  });
+}
+function addExtra() { siteData.activities.extra.push({ lead: "", highlight: "" }); renderExtras(); }
+function removeExtra(i) { siteData.activities.extra.splice(i, 1); renderExtras(); }
+
+function renderContacts() {
+  const el = document.getElementById("contacts");
+  el.innerHTML = "";
+  siteData.contact.forEach((c, i) => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML =
+      '<button class="remove-btn" onclick="removeContact(' + i + ')">削除</button>' +
+      '<label class="field-label">名称(例: Email)</label><input type="text" class="c-label">' +
+      '<label class="field-label">表示テキスト</label><input type="text" class="c-value">' +
+      '<label class="field-label">リンク先URL</label><input type="text" class="c-url">';
+    el.appendChild(div);
+    div.querySelector(".c-label").value = c.label;
+    div.querySelector(".c-value").value = c.value;
+    div.querySelector(".c-url").value = c.url || "";
+    div.querySelector(".c-label").addEventListener("input", (e) => { siteData.contact[i].label = e.target.value; });
+    div.querySelector(".c-value").addEventListener("input", (e) => { siteData.contact[i].value = e.target.value; });
+    div.querySelector(".c-url").addEventListener("input", (e) => { siteData.contact[i].url = e.target.value; });
+  });
+}
+function addContact() { siteData.contact.push({ label: "", value: "", url: "" }); renderContacts(); }
+function removeContact(i) { siteData.contact.splice(i, 1); renderContacts(); }
+
+bindInput("hero-eyebrow", siteData.hero, "eyebrow");
+bindInput("hero-title", siteData.hero, "title");
+bindInput("hero-body", siteData.hero, "body");
+bindInput("overview-lead", siteData.overview, "lead");
+bindInput("activities-note", siteData.activities, "note");
+bindInput("join-note", siteData.join, "note");
+
+// ============================================================
+// 地域ページタブ
+// ============================================================
+function renderRegionTabs() {
+  const el = document.getElementById("region-tabs");
+  el.innerHTML = "";
+  REGION_KEYS.forEach((key) => {
+    const btn = document.createElement("button");
+    btn.textContent = REGION_LABELS[key];
+    if (key === currentRegionTab) btn.classList.add("active");
+    btn.addEventListener("click", () => { currentRegionTab = key; renderRegionTabs(); renderRegionForm(); });
+    el.appendChild(btn);
+  });
+  renderRegionForm();
+}
+
+function renderRegionForm() {
+  const el = document.getElementById("region-form");
+  const key = currentRegionTab;
+  const hero = siteData.regionHero[key];
+  const card = siteData.regionCards[key];
+  el.innerHTML =
+    '<label class="field-label">英字ラベル(例: ASIA)</label><input type="text" id="rh-en">' +
+    '<label class="field-label">見出し(例: アジア)</label><input type="text" id="rh-jp">' +
+    '<label class="field-label">地域ページの紹介文</label><textarea id="rh-intro"></textarea>' +
+    '<label class="field-label">トップページのカードに出る説明文(短め)</label><textarea id="rc-desc"></textarea>';
+  document.getElementById("rh-en").value = hero.en;
+  document.getElementById("rh-jp").value = hero.jp;
+  document.getElementById("rh-intro").value = hero.intro;
+  document.getElementById("rc-desc").value = card.desc;
+  document.getElementById("rh-en").addEventListener("input", (e) => { hero.en = e.target.value; });
+  document.getElementById("rh-jp").addEventListener("input", (e) => { hero.jp = e.target.value; card.title = e.target.value; });
+  document.getElementById("rh-intro").addEventListener("input", (e) => { hero.intro = e.target.value; });
+  document.getElementById("rc-desc").addEventListener("input", (e) => { card.desc = e.target.value; });
+}
+
+// ============================================================
+// 研究一覧タブ
+// ============================================================
+function renderResearchRegionTabs() {
+  const el = document.getElementById("research-region-tabs");
+  el.innerHTML = "";
+  REGION_KEYS.forEach((key) => {
+    const btn = document.createElement("button");
+    btn.textContent = REGION_LABELS[key];
+    if (key === currentResearchTab) btn.classList.add("active");
+    btn.addEventListener("click", () => { currentResearchTab = key; renderResearchRegionTabs(); });
+    el.appendChild(btn);
+  });
+}
+
+function renderResearchForm() {
+  const el = document.getElementById("research-form");
+  el.innerHTML = "";
+  const key = currentResearchTab;
+  const items = researchData[key] || (researchData[key] = []);
+  if (items.length === 0) {
+    el.innerHTML = '<p style="font-size:13px;color:#9aa1af;">まだこの地域には研究が登録されていません。「＋ この地域に研究を追加」から追加してください。</p>';
+  }
+  items.forEach((item, i) => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML =
+      '<button class="remove-btn" onclick="removeResearch(' + i + ')">削除</button>' +
+      '<label class="field-label">タイトル</label><input type="text" class="r-title">' +
+      '<label class="field-label">説明文</label><textarea class="r-desc"></textarea>' +
+      '<label class="field-label">研究ページのURL</label><input type="text" class="r-url">';
+    el.appendChild(div);
+    div.querySelector(".r-title").value = item.title;
+    div.querySelector(".r-desc").value = item.desc;
+    div.querySelector(".r-url").value = item.url;
+    div.querySelector(".r-title").addEventListener("input", (e) => { item.title = e.target.value; });
+    div.querySelector(".r-desc").addEventListener("input", (e) => { item.desc = e.target.value; });
+    div.querySelector(".r-url").addEventListener("input", (e) => { item.url = e.target.value; });
+  });
+}
+function addResearchItem() {
+  const key = currentResearchTab;
+  if (!researchData[key]) researchData[key] = [];
+  researchData[key].push({ title: "", desc: "", url: "" });
+  renderResearchForm();
+}
+function removeResearch(i) {
+  researchData[currentResearchTab].splice(i, 1);
+  renderResearchForm();
+}
+
+// ============================================================
+// ファイル書き出し
+// ============================================================
+function jsStr(s) {
+  return JSON.stringify(s || "");
+}
+
+function buildSiteDataJs() {
+  const d = siteData;
+  let out = "/* site-data.js — サイト編集ツール(editor.html)で生成 */\n\nwindow.SITE_DATA = {\n";
+  out += "  hero: { eyebrow: " + jsStr(d.hero.eyebrow) + ", title: " + jsStr(d.hero.title) + ", body: " + jsStr(d.hero.body) + " },\n";
+  out += "  news: [\n" + d.news.map((n) => "    { date: " + jsStr(n.date) + ", title: " + jsStr(n.title) + " }").join(",\n") + "\n  ],\n";
+  out += "  overview: {\n    lead: " + jsStr(d.overview.lead) + ",\n    examples: [\n" +
+    d.overview.examples.map((e) => "      " + jsStr(e)).join(",\n") + "\n    ]\n  },\n";
+  out += "  activities: {\n    pillars: [\n" +
+    d.activities.pillars.map((p) => "      { kicker: " + jsStr(p.kicker) + ", label: " + jsStr(p.label) + ", body: " + jsStr(p.body) + " }").join(",\n") +
+    "\n    ],\n    extra: [\n" +
+    d.activities.extra.map((e) => "      { lead: " + jsStr(e.lead) + ", highlight: " + jsStr(e.highlight) + " }").join(",\n") +
+    "\n    ],\n    note: " + jsStr(d.activities.note) + "\n  },\n";
+  out += "  join: { note: " + jsStr(d.join.note) + " },\n";
+  out += "  contact: [\n" + d.contact.map((c) => "    { label: " + jsStr(c.label) + ", value: " + jsStr(c.value) + ", url: " + jsStr(c.url) + " }").join(",\n") + "\n  ],\n";
+  out += "  regionCards: {\n" + REGION_KEYS.map((k) => "    " + k + ": { title: " + jsStr(d.regionCards[k].title) + ", desc: " + jsStr(d.regionCards[k].desc) + " }").join(",\n") + "\n  },\n";
+  out += "  regionHero: {\n" + REGION_KEYS.map((k) => "    " + k + ": { en: " + jsStr(d.regionHero[k].en) + ", jp: " + jsStr(d.regionHero[k].jp) + ", intro: " + jsStr(d.regionHero[k].intro) + " }").join(",\n") + "\n  }\n";
+  out += "};\n";
+  return out;
+}
+
+function buildResearchDataJs() {
+  let out = "/* research-data.js — サイト編集ツール(editor.html)で生成 */\n\nwindow.RESEARCH_DATA = {\n\n";
+  out += REGION_KEYS.map((key) => {
+    const items = researchData[key] || [];
+    if (items.length === 0) return "  " + key + ": [\n  ],";
+    const rows = items.map((it) => "    { title: " + jsStr(it.title) + ", desc: " + jsStr(it.desc) + ", url: " + jsStr(it.url) + " },").join("\n");
+    return "  " + key + ": [\n" + rows + "\n  ],";
+  }).join("\n\n");
+  out += "\n\n};\n";
+  return out;
+}
+
+function downloadFile(filename, content) {
+  const blob = new Blob([content], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// 初期表示
+renderAll();
+</script>
+
+</body>
+</html>
