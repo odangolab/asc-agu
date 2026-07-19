@@ -3,362 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>サイト編集ツール | 地域研究愛好会</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<title>ビジュアル編集ツール | 地域研究愛好会</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-  :root {
-    --accent: #1d4ed8;
-    --bg: #f5f7fb;
-    --border: #e2e6ef;
-    --text: #161c2c;
-    --muted: #6b7280;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'Noto Sans JP', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-  }
-  header {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    padding: 18px 24px;
+  /* ===== エディタ専用の見た目 ===== */
+  body { background: #eceff5; }
+
+  .ed-toolbar {
     position: sticky;
     top: 0;
-    z-index: 20;
-  }
-  header h1 { margin: 0 0 4px; font-size: 18px; }
-  header p { margin: 0; font-size: 13px; color: var(--muted); }
-
-  .layout {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 20px 16px 80px;
-  }
-
-  .step-box {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 20px;
-    margin-bottom: 20px;
-  }
-  .step-box h2 {
-    font-size: 15px;
-    margin: 0 0 8px;
-  }
-  .step-box p {
-    font-size: 13.5px;
-    color: var(--muted);
-    line-height: 1.8;
-    margin: 0 0 10px;
-  }
-  .file-input-row {
+    z-index: 100;
+    background: #12172a;
+    color: #fff;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
   }
-  .file-input-row label.file-btn {
-    display: inline-block;
-    background: #eef3fc;
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    border: 1px solid #cfe0fb;
+  .ed-toolbar .ed-title {
+    font-size: 13.5px;
+    font-weight: 900;
+    margin-right: 6px;
+    white-space: nowrap;
   }
-  .file-input-row input[type=file] { display: none; }
-  .status-tag {
-    font-size: 12.5px;
-    color: #16a34a;
-    font-weight: 700;
-  }
-
-  .tabs {
+  .ed-pagetabs {
     display: flex;
-    gap: 6px;
-    margin-bottom: 18px;
+    gap: 4px;
     flex-wrap: wrap;
   }
-  .tab-btn {
-    padding: 9px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: #fff;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--muted);
-    cursor: pointer;
-  }
-  .tab-btn.active {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-  }
-
-  .panel { display: none; }
-  .panel.active { display: block; }
-
-  .card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 22px;
-    margin-bottom: 16px;
-  }
-  .card h3 {
-    font-size: 14px;
-    margin: 0 0 4px;
-    color: var(--accent);
-  }
-  .card .card-desc {
-    font-size: 12.5px;
-    color: var(--muted);
-    margin: 0 0 14px;
-  }
-
-  label.field-label {
-    display: block;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--muted);
-    margin: 12px 0 4px;
-  }
-  input[type=text], textarea {
-    width: 100%;
+  .ed-pagetabs button {
     font-family: inherit;
-    font-size: 13.5px;
-    padding: 9px 11px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #fbfcfe;
-    resize: vertical;
-  }
-  textarea { min-height: 56px; line-height: 1.6; }
-  input[type=text]:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: #fff;
-  }
-
-  .list-item {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    background: #fbfcfe;
-    position: relative;
-  }
-  .list-item .remove-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 11.5px;
-    color: #b91c1c;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 6px;
-    padding: 3px 9px;
-    cursor: pointer;
-  }
-  .add-btn {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    color: var(--accent);
-    background: #eef3fc;
-    border: 1px solid #cfe0fb;
-    border-radius: 8px;
-    padding: 8px 14px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: transparent;
+    color: rgba(255,255,255,0.75);
     cursor: pointer;
-    margin-top: 4px;
   }
-
-  .region-select {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
+  .ed-pagetabs button.active {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #fff;
   }
-  .region-select button {
+  .ed-toolbar .spacer { flex: 1; }
+  .ed-toolbar .tb-btn {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
     padding: 7px 14px;
     border-radius: 999px;
-    border: 1px solid var(--border);
-    background: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
+    border: none;
     cursor: pointer;
+    background: #fff;
+    color: #12172a;
+    white-space: nowrap;
   }
-  .region-select button.active {
-    background: #12172a;
-    color: #fff;
-    border-color: #12172a;
+  .ed-toolbar .tb-btn.primary { background: #4ade80; }
+  .ed-toolbar label.tb-btn { display: inline-block; }
+  .ed-toolbar input[type=file] { display: none; }
+  .ed-status { font-size: 11.5px; color: #86efac; font-weight: 700; }
+
+  .ed-hint {
+    background: #fffbe6;
+    border-bottom: 1px solid #f0e6b0;
+    color: #6b5d1f;
+    font-size: 12.5px;
+    padding: 8px 18px;
+    line-height: 1.7;
   }
 
-  .download-bar {
-    position: sticky;
-    bottom: 0;
+  .ed-canvas {
+    max-width: 1080px;
+    margin: 22px auto 100px;
     background: #fff;
-    border-top: 1px solid var(--border);
-    padding: 14px 20px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    margin: 0 -16px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(20,30,60,0.12);
   }
-  .dl-btn {
-    background: var(--accent);
-    color: #fff;
-    font-size: 13.5px;
+
+  /* 編集できる場所の視覚化 */
+  [contenteditable] {
+    outline: none;
+    border-radius: 4px;
+    transition: box-shadow 0.12s ease;
+    cursor: text;
+  }
+  [contenteditable]:hover { box-shadow: 0 0 0 2px rgba(29,78,216,0.25); }
+  [contenteditable]:focus { box-shadow: 0 0 0 2px #1d4ed8; background: #f4f8ff; }
+
+  /* リスト項目のホバー時コントロール */
+  .ed-item { position: relative; }
+  .ed-controls {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: none;
+    gap: 4px;
+    z-index: 5;
+  }
+  .ed-item:hover > .ed-controls { display: flex; }
+  .ed-ctl {
+    font-size: 11px;
     font-weight: 700;
-    padding: 11px 22px;
+    border-radius: 6px;
     border: none;
-    border-radius: 999px;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-family: inherit;
+  }
+  .ed-ctl.del { background: #fee2e2; color: #b91c1c; }
+  .ed-ctl.link { background: #e0eaff; color: #1d4ed8; }
+
+  .ed-add {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #eef3fc;
+    border: 1.5px dashed #9db8ea;
+    border-radius: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: inherit;
+  }
+  .ed-add:hover { background: #e0eaff; }
+
+  /* 自由セクションのブロック追加パレット */
+  .ed-palette {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .ed-palette button {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 1px solid #d6ddeb;
+    background: #f8fafd;
+    color: #33394a;
     cursor: pointer;
   }
-  .dl-btn.secondary {
-    background: #fff;
-    color: var(--accent);
-    border: 1.5px solid var(--accent);
+  .ed-palette button:hover { border-color: #1d4ed8; color: #1d4ed8; }
+
+  .ed-section-add-wrap {
+    padding: 10px 6vw 40px;
+    text-align: center;
+  }
+  .ed-section-add {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    color: #1d4ed8;
+    background: #eef3fc;
+    border: 2px dashed #9db8ea;
+    border-radius: 14px;
+    padding: 16px 30px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .ed-section-add:hover { background: #e0eaff; }
+
+  .ed-img-url {
+    width: 100%;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 7px 10px;
+    border: 1px solid #d6ddeb;
+    border-radius: 8px;
+    margin-top: 6px;
+    background: #f8fafd;
+  }
+  .ed-img-placeholder {
+    background: #f0f3f9;
+    border: 1.5px dashed #c2cade;
+    border-radius: 14px;
+    padding: 34px;
+    text-align: center;
+    color: #9aa1af;
+    font-size: 13px;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🛠 サイト編集ツール</h1>
-  <p>地域研究愛好会のホームページを、コードを見ずにフォームで編集するためのツールです。</p>
-</header>
-
-<div class="layout">
-
-  <div class="step-box">
-    <h2>① まず、いまのサイトのデータを読み込む</h2>
-    <p>サイトのフォルダにある <code>site-data.js</code> と <code>research-data.js</code> を選んでください。読み込むと、現在の内容がこのツールに反映されます。(初めて使うときはこの手順は飛ばして、そのまま②に進んでもOKです)</p>
-    <div class="file-input-row">
-      <label class="file-btn">site-data.js を選ぶ<input type="file" id="load-site" accept=".js"></label>
-      <label class="file-btn">research-data.js を選ぶ<input type="file" id="load-research" accept=".js"></label>
-      <span class="status-tag" id="load-status"></span>
-    </div>
-  </div>
-
-  <div class="step-box">
-    <h2>② フォームで内容を編集する</h2>
-    <p>下のタブから編集したい場所を選んで、テキストを書き換えたり、項目を追加・削除したりしてください。</p>
-  </div>
-
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="home">ホームページ</button>
-    <button class="tab-btn" data-tab="regions">地域ページの紹介文</button>
-    <button class="tab-btn" data-tab="research">研究一覧</button>
-  </div>
-
-  <!-- ================= HOME TAB ================= -->
-  <div class="panel active" id="panel-home">
-
-    <div class="card">
-      <h3>トップのメッセージ</h3>
-      <p class="card-desc">ページ最上部、大きく表示される部分です。</p>
-      <label class="field-label">見出し上のラベル(英字)</label>
-      <input type="text" id="hero-eyebrow">
-      <label class="field-label">大見出し</label>
-      <textarea id="hero-title"></textarea>
-      <label class="field-label">説明文</label>
-      <textarea id="hero-body"></textarea>
-    </div>
-
-    <div class="card">
-      <h3>お知らせ</h3>
-      <p class="card-desc">日付とタイトルのセットです。新しいお知らせは「追加」で増やせます。</p>
-      <div id="news-items"></div>
-      <button class="add-btn" onclick="addNewsItem()">＋ お知らせを追加</button>
-    </div>
-
-    <div class="card">
-      <h3>サークル概要</h3>
-      <label class="field-label">紹介文</label>
-      <textarea id="overview-lead"></textarea>
-      <label class="field-label">「例えば…」の具体例</label>
-      <div id="overview-examples"></div>
-      <button class="add-btn" onclick="addExample()">＋ 具体例を追加</button>
-    </div>
-
-    <div class="card">
-      <h3>活動内容(3本柱)</h3>
-      <p class="card-desc">「発見・探求・発信」のような3つの柱を紹介する部分です。</p>
-      <div id="pillars"></div>
-    </div>
-
-    <div class="card">
-      <h3>そのほかの活動アイデア</h3>
-      <div id="extras"></div>
-      <button class="add-btn" onclick="addExtra()">＋ アイデアを追加</button>
-    </div>
-
-    <div class="card">
-      <h3>募集の一言</h3>
-      <textarea id="activities-note"></textarea>
-    </div>
-
-    <div class="card">
-      <h3>参加案内</h3>
-      <textarea id="join-note"></textarea>
-    </div>
-
-    <div class="card">
-      <h3>お問い合わせ先</h3>
-      <div id="contacts"></div>
-      <button class="add-btn" onclick="addContact()">＋ 連絡先を追加</button>
-    </div>
-
-  </div>
-
-  <!-- ================= REGIONS TAB ================= -->
-  <div class="panel" id="panel-regions">
-    <div class="card">
-      <h3>地域ページの紹介文</h3>
-      <p class="card-desc">各地域ページの上部に表示される、タイトルと紹介文です。トップページの「活動地域」カードの説明文も一緒に編集できます。</p>
-      <div class="region-select" id="region-tabs"></div>
-      <div id="region-form"></div>
-    </div>
-  </div>
-
-  <!-- ================= RESEARCH TAB ================= -->
-  <div class="panel" id="panel-research">
-    <div class="card">
-      <h3>研究一覧</h3>
-      <p class="card-desc">各地域ページに表示される、研究のタイトル・説明・リンク先です。研究ページは別のホームページビルダーで作ったものでOK、そのURLをここに貼ってください。</p>
-      <div class="region-select" id="research-region-tabs"></div>
-      <div id="research-form"></div>
-      <button class="add-btn" onclick="addResearchItem()">＋ この地域に研究を追加</button>
-    </div>
-  </div>
-
+<div class="ed-toolbar">
+  <span class="ed-title">🛠 ビジュアル編集</span>
+  <div class="ed-pagetabs" id="page-tabs"></div>
+  <span class="spacer"></span>
+  <label class="tb-btn">📂 site-data.js<input type="file" id="load-site" accept=".js"></label>
+  <label class="tb-btn">📂 research-data.js<input type="file" id="load-research" accept=".js"></label>
+  <span class="ed-status" id="status"></span>
+  <button class="tb-btn primary" onclick="downloadAll()">💾 保存(2ファイルをダウンロード)</button>
 </div>
 
-<div class="download-bar">
-  <button class="dl-btn secondary" onclick="downloadFile('site-data.js', buildSiteDataJs())">site-data.js をダウンロード</button>
-  <button class="dl-btn" onclick="downloadFile('research-data.js', buildResearchDataJs())">research-data.js をダウンロード</button>
+<div class="ed-hint">
+  文字は<b>クリックしてそのまま書き換え</b>できます。項目の上にマウスをのせると「削除」「🔗」ボタンが出ます。
+  文章ブロック内で文字を選択して「🔗」を押すとリンクを付けられます。編集が終わったら右上の「💾 保存」→ ダウンロードされた2ファイルをサイトのフォルダに上書きしてください。
 </div>
+
+<div class="ed-canvas" id="canvas"></div>
 
 <script>
 // ============================================================
-// 初期データ(現在サイトに入っている内容と同じもの)
+// データ(初期値 = 現在のサイトの内容)
 // ============================================================
 let siteData = {
-  hero: {
-    eyebrow: "Area Studies",
-    title: "世界の地域を、学び・比べ・語り合う。",
-    body: "地域研究愛好会は、アジア・オセアニア・ヨーロッパ・アフリカ・アメリカの歴史や社会、文化を比較しながら学ぶサークルです。各地域のページから、メンバーが取り組んでいる研究の一覧を見ることができます。"
-  },
-  news: [
-    { date: "7/3", title: "ホームページ開設いたしました" }
-  ],
+  hero: { eyebrow: "Area Studies", title: "世界の地域を、学び・比べ・語り合う。", body: "地域研究愛好会は、アジア・オセアニア・ヨーロッパ・アフリカ・アメリカの歴史や社会、文化を比較しながら学ぶサークルです。各地域のページから、メンバーが取り組んでいる研究の一覧を見ることができます。" },
+  news: [ { date: "7/3", title: "ホームページ開設いたしました", url: "#" } ],
+  customSections: [],
   overview: {
     lead: "地域研究愛好会(ASC)では、日本や世界の地域に対する見識を互いに深め、好奇心を刺激しあえるコミュニティの形成を目指します。各々の興味関心に従い、未知の世界を切り拓く意欲がある方を歓迎します。",
     examples: [
@@ -382,9 +242,7 @@ let siteData = {
     ],
     note: "具体的な活動内容については検討中につき、アイデアを募集しています。アイデアのある方、あるいは参加希望または活動に興味のある方は、DMまたはキャプションのフォームからお気軽にご連絡ください!"
   },
-  join: {
-    note: "今後、本格的な活動開始に向け「プレ定例会」などの実施を予定しています。ぜひ当アカウントをフォローしてお待ちください!"
-  },
+  join: { note: "今後、本格的な活動開始に向け「プレ定例会」などの実施を予定しています。ぜひ当アカウントをフォローしてお待ちください!" },
   contact: [
     { label: "Email", value: "contact@areastudies.example", url: "mailto:contact@areastudies.example" },
     { label: "X (Twitter)", value: "@areastudies_club", url: "#" },
@@ -407,34 +265,366 @@ let siteData = {
 };
 
 let researchData = {
-  asia: [
-    { title: "東アジアの近代化と都市発展", desc: "明治期以降の東アジア各国における都市化プロセスの比較研究", url: "https://example.com/research/asia-modernization" }
-  ],
-  oceania: [],
-  europe: [],
-  africa: [],
-  america: []
+  asia: [ { title: "東アジアの近代化と都市発展", desc: "明治期以降の東アジア各国における都市化プロセスの比較研究", url: "https://example.com/research/asia-modernization" } ],
+  oceania: [], europe: [], africa: [], america: []
 };
 
 const REGION_KEYS = ["asia", "oceania", "europe", "africa", "america"];
 const REGION_LABELS = { asia: "アジア", oceania: "オセアニア", europe: "ヨーロッパ", africa: "アフリカ", america: "アメリカ" };
-let currentRegionTab = "asia";
-let currentResearchTab = "asia";
+let currentPage = "home";
 
 // ============================================================
-// タブ切り替え
+// 便利関数
 // ============================================================
-document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+function el(tag, attrs, ...children) {
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) {
+    if (k === "class") e.className = attrs[k];
+    else if (k === "style") e.style.cssText = attrs[k];
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  children.forEach((c) => {
+    if (c == null) return;
+    e.append(typeof c === "string" ? document.createTextNode(c) : c);
   });
-});
+  return e;
+}
+
+// プレーンテキスト編集(改行なし想定の短文/長文どちらもOK)
+function editable(tag, attrs, obj, key, opts) {
+  const e = el(tag, attrs);
+  e.textContent = obj[key] || "";
+  try { e.contentEditable = "plaintext-only"; } catch (_) { e.contentEditable = "true"; }
+  if (e.contentEditable !== "plaintext-only") e.contentEditable = "true";
+  e.spellcheck = false;
+  if (opts && opts.placeholder && !obj[key]) e.textContent = opts.placeholder;
+  e.addEventListener("input", () => { obj[key] = e.textContent; });
+  e.addEventListener("focus", () => {
+    if (opts && opts.placeholder && obj[key] === "" && e.textContent === opts.placeholder) e.textContent = "";
+  });
+  e.addEventListener("blur", () => {
+    if (opts && opts.placeholder && e.textContent.trim() === "") { e.textContent = opts.placeholder; obj[key] = ""; }
+  });
+  return e;
+}
+
+// リッチテキスト編集(リンク可)
+function richEditable(tag, attrs, obj, key) {
+  const e = el(tag, attrs);
+  e.innerHTML = obj[key] || "ここに文章を入力…";
+  e.contentEditable = "true";
+  e.spellcheck = false;
+  e.addEventListener("input", () => { obj[key] = e.innerHTML; });
+  return e;
+}
+
+function ctlDel(onclick) {
+  return el("button", { class: "ed-ctl del", onclick, title: "削除" }, "削除");
+}
+function ctlLink(onclick) {
+  return el("button", { class: "ed-ctl link", onclick, title: "リンク設定" }, "🔗");
+}
+function controls(...btns) {
+  return el("div", { class: "ed-controls" }, ...btns);
+}
+
+function promptUrl(current) {
+  const url = prompt("リンク先のURLを入力してください。\n(別ページに飛ばす場合は asia.html のようなファイル名でもOK)", current || "https://");
+  return url === null ? null : url.trim();
+}
 
 // ============================================================
-// ファイル読み込み(既存の site-data.js / research-data.js)
+// ページタブ
+// ============================================================
+function renderPageTabs() {
+  const wrap = document.getElementById("page-tabs");
+  wrap.innerHTML = "";
+  const pages = [["home", "ホーム"], ...REGION_KEYS.map((k) => [k, REGION_LABELS[k]])];
+  pages.forEach(([key, label]) => {
+    const b = el("button", { onclick: () => { currentPage = key; render(); } }, label);
+    if (key === currentPage) b.classList.add("active");
+    wrap.appendChild(b);
+  });
+}
+
+// ============================================================
+// 共通パーツ(ヘッダー・フッター) ※編集不可のプレビュー
+// ============================================================
+function siteHeader() {
+  return el("header", { class: "site-header" },
+    el("span", { class: "site-logo" },
+      el("span", { class: "site-logo-text" },
+        el("span", { class: "site-logo-title" }, "地域研究愛好会"),
+        el("span", { class: "site-logo-sub" }, "AGU AREA STUDIES CLUB"))),
+    el("nav", { class: "site-nav" },
+      ...REGION_KEYS.map((k) =>
+        el("a", { href: "javascript:void(0)", class: k === currentPage ? "active" : "", onclick: () => { currentPage = k; render(); } },
+          k.charAt(0).toUpperCase() + k.slice(1)))));
+}
+
+function siteFooter() {
+  return el("footer", { class: "site-footer" },
+    el("span", {}, "© 地域研究愛好会 / AGU Area Studies Club"),
+    el("span", {}, "TOKYO, JAPAN"));
+}
+
+function sectionHeading(title, eyebrow) {
+  return el("div", { style: "display:flex; align-items:baseline; gap:12px; margin-bottom:20px;" },
+    el("h2", { style: "margin:0;" }, title),
+    eyebrow ? el("span", { class: "eyebrow" }, eyebrow) : null);
+}
+
+// ============================================================
+// ホームページの描画
+// ============================================================
+function renderHome(canvas) {
+  const D = siteData;
+
+  // ヒーロー
+  canvas.appendChild(el("div", { class: "hero" },
+    editable("span", { class: "eyebrow" }, D.hero, "eyebrow"),
+    editable("h1", {}, D.hero, "title"),
+    editable("p", {}, D.hero, "body")));
+
+  // お知らせ
+  const newsBox = el("div", { class: "news-box" });
+  D.news.forEach((n, i) => {
+    newsBox.appendChild(el("div", { class: "news-row ed-item" },
+      controls(
+        ctlLink(() => { const u = promptUrl(n.url); if (u !== null) { n.url = u; } }),
+        ctlDel(() => { D.news.splice(i, 1); render(); })),
+      editable("span", { class: "news-date" }, n, "date", { placeholder: "7/1" }),
+      editable("a", { class: "news-title", href: "javascript:void(0)" }, n, "title", { placeholder: "お知らせのタイトル" })));
+  });
+  canvas.appendChild(el("section", {},
+    sectionHeading("お知らせ", "NEWS"),
+    newsBox,
+    el("button", { class: "ed-add", onclick: () => { D.news.unshift({ date: "", title: "", url: "#" }); render(); } }, "＋ お知らせを追加")));
+
+  // サークル概要
+  const exWrap = el("div", {});
+  D.overview.examples.forEach((_, i) => {
+    const holder = { get v() { return D.overview.examples[i]; }, set v(x) { D.overview.examples[i] = x; } };
+    const row = el("div", { class: "example-row ed-item" },
+      controls(ctlDel(() => { D.overview.examples.splice(i, 1); render(); })),
+      el("span", { class: "example-dot" }),
+      editable("p", { class: "example-text" }, holder, "v", { placeholder: "具体例を入力…" }));
+    exWrap.appendChild(row);
+  });
+  canvas.appendChild(el("section", { style: "padding-top:16px;" },
+    sectionHeading("サークル概要", "OVERVIEW"),
+    el("div", { class: "overview-card" },
+      editable("p", { class: "lead" }, D.overview, "lead"),
+      el("p", { class: "examples-label" }, "例えば…"),
+      exWrap,
+      el("button", { class: "ed-add", onclick: () => { D.overview.examples.push(""); render(); } }, "＋ 具体例を追加"))));
+
+  // 活動内容
+  const pillarWrap = el("div", { class: "pillar-list" });
+  D.activities.pillars.forEach((p, i) => {
+    pillarWrap.appendChild(el("div", { class: "pillar-card ed-item" },
+      controls(ctlDel(() => { D.activities.pillars.splice(i, 1); render(); })),
+      el("div", {},
+        el("span", { class: "pillar-num" }, String(i + 1).padStart(2, "0")),
+        el("div", {},
+          editable("span", { class: "pillar-kicker" }, p, "kicker", { placeholder: "ラベル" }),
+          editable("span", { class: "pillar-label" }, p, "label", { placeholder: "見出し" }))),
+      editable("p", { class: "pillar-body" }, p, "body", { placeholder: "説明文…" })));
+  });
+  const extraGrid = el("div", { class: "extra-grid" });
+  D.activities.extra.forEach((ea, i) => {
+    extraGrid.appendChild(el("div", { class: "ed-item" },
+      controls(ctlDel(() => { D.activities.extra.splice(i, 1); render(); })),
+      editable("p", { class: "extra-lead" }, ea, "lead", { placeholder: "前置き" }),
+      editable("p", { class: "extra-highlight" }, ea, "highlight", { placeholder: "内容" })));
+  });
+  canvas.appendChild(el("section", { style: "padding-top:0;" },
+    sectionHeading("活動内容", "ACTIVITIES"),
+    pillarWrap,
+    el("button", { class: "ed-add", onclick: () => { D.activities.pillars.push({ kicker: "", label: "", body: "" }); render(); } }, "＋ 柱を追加"),
+    el("div", { class: "extra-box", style: "margin-top:20px;" },
+      el("p", { class: "extra-label" }, "そのほかにも…"),
+      extraGrid,
+      el("button", { class: "ed-add", onclick: () => { D.activities.extra.push({ lead: "", highlight: "" }); render(); } }, "＋ アイデアを追加")),
+    editable("p", { class: "recruit-note" }, D.activities, "note")));
+
+  // 活動地域カード
+  const regionGrid = el("div", { class: "region-grid" });
+  REGION_KEYS.forEach((k) => {
+    const card = D.regionCards[k];
+    regionGrid.appendChild(el("div", { class: "region-card" },
+      el("span", { class: "eyebrow" }, k.charAt(0).toUpperCase() + k.slice(1)),
+      editable("h3", {}, card, "title"),
+      editable("p", {}, card, "desc")));
+  });
+  canvas.appendChild(el("section", { style: "padding-top:0;" },
+    el("h2", {}, "活動地域"),
+    el("p", { class: "section-lead" }, "興味のある地域のページを開くと、その地域の紹介と、メンバーの研究一覧が見られます。(カードの文字は編集できます。上のタブから各地域ページの編集に移れます)"),
+    regionGrid));
+
+  // 自由セクション
+  D.customSections.forEach((sec, si) => {
+    canvas.appendChild(renderCustomSection(sec, si));
+  });
+  canvas.appendChild(el("div", { class: "ed-section-add-wrap" },
+    el("button", { class: "ed-section-add", onclick: () => {
+      D.customSections.push({ title: "新しいセクション", eyebrow: "SECTION", blocks: [ { type: "text", html: "ここに文章を入力…" } ] });
+      render();
+    } }, "＋ セクションを追加する")));
+
+  // 参加案内・お問い合わせ
+  const contactList = el("div", {});
+  D.contact.forEach((c, i) => {
+    contactList.appendChild(el("div", { class: "contact-row ed-item" },
+      controls(
+        ctlLink(() => { const u = promptUrl(c.url); if (u !== null) c.url = u; }),
+        ctlDel(() => { D.contact.splice(i, 1); render(); })),
+      editable("span", {}, c, "label", { placeholder: "名称" }),
+      editable("a", { href: "javascript:void(0)" }, c, "value", { placeholder: "表示テキスト" })));
+  });
+  canvas.appendChild(el("section", { style: "padding-top:0;" },
+    el("div", { class: "join-grid" },
+      el("div", { class: "join-note" },
+        editable("p", {}, D.join, "note")),
+      el("div", { class: "contact-box" },
+        el("div", { class: "contact-label" }, "CONTACT"),
+        contactList,
+        el("button", { class: "ed-add", onclick: () => { D.contact.push({ label: "", value: "", url: "" }); render(); } }, "＋ 連絡先を追加")))));
+}
+
+// ============================================================
+// 自由セクションの描画
+// ============================================================
+function renderCustomSection(sec, si) {
+  const D = siteData;
+  const card = el("div", { class: "overview-card" });
+
+  (sec.blocks || []).forEach((b, bi) => {
+    const delBtn = ctlDel(() => { sec.blocks.splice(bi, 1); render(); });
+
+    if (b.type === "heading") {
+      card.appendChild(el("div", { class: "ed-item" },
+        controls(delBtn),
+        editable("h3", { class: "cs-heading" }, b, "text", { placeholder: "見出しを入力…" })));
+
+    } else if (b.type === "text") {
+      const rich = richEditable("div", { class: "cs-text" }, b, "html");
+      const linkBtn = ctlLink(() => {
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || !rich.contains(sel.anchorNode)) {
+          alert("先に、リンクを付けたい文字をドラッグで選択してから🔗を押してください。");
+          return;
+        }
+        const u = promptUrl("");
+        if (u) { document.execCommand("createLink", false, u); b.html = rich.innerHTML; }
+      });
+      card.appendChild(el("div", { class: "ed-item" }, controls(linkBtn, delBtn), rich));
+
+    } else if (b.type === "image") {
+      const imgHolder = el("div", {});
+      function drawImg() {
+        imgHolder.innerHTML = "";
+        if (b.url) {
+          const img = el("img", { src: b.url, alt: "" });
+          img.onerror = () => { imgHolder.innerHTML = ""; imgHolder.appendChild(el("div", { class: "ed-img-placeholder" }, "画像を読み込めませんでした。URLを確認してください。")); };
+          imgHolder.appendChild(img);
+        } else {
+          imgHolder.appendChild(el("div", { class: "ed-img-placeholder" }, "下の欄に画像のURLを貼ると、ここに表示されます"));
+        }
+      }
+      drawImg();
+      const urlInput = el("input", { class: "ed-img-url", type: "text", placeholder: "画像のURL (例: https://.../photo.jpg)" });
+      urlInput.value = b.url || "";
+      urlInput.addEventListener("input", () => { b.url = urlInput.value.trim(); drawImg(); });
+      card.appendChild(el("figure", { class: "cs-image ed-item", style: "margin:14px 0;" },
+        controls(delBtn),
+        imgHolder,
+        editable("figcaption", { class: "cs-caption" }, b, "caption", { placeholder: "キャプション(任意)" }),
+        urlInput));
+
+    } else if (b.type === "divider") {
+      card.appendChild(el("div", { class: "ed-item" }, controls(delBtn), el("hr", { class: "cs-divider" })));
+
+    } else if (b.type === "button") {
+      card.appendChild(el("p", { class: "ed-item", style: "margin:14px 0 4px;" },
+        controls(
+          ctlLink(() => { const u = promptUrl(b.url); if (u !== null) b.url = u; }),
+          delBtn),
+        editable("a", { class: "cs-button", href: "javascript:void(0)" }, b, "label", { placeholder: "ボタンの文字" })));
+    }
+  });
+
+  // ブロック追加パレット
+  card.appendChild(el("div", { class: "ed-palette" },
+    el("button", { onclick: () => { sec.blocks.push({ type: "heading", text: "" }); render(); } }, "＋ 見出し"),
+    el("button", { onclick: () => { sec.blocks.push({ type: "text", html: "ここに文章を入力…" }); render(); } }, "＋ 文章"),
+    el("button", { onclick: () => { sec.blocks.push({ type: "image", url: "", caption: "" }); render(); } }, "＋ 画像"),
+    el("button", { onclick: () => { sec.blocks.push({ type: "divider" }); render(); } }, "＋ 区切り線"),
+    el("button", { onclick: () => { sec.blocks.push({ type: "button", label: "くわしく見る", url: "#" }); render(); } }, "＋ ボタン(リンク)")));
+
+  const moveUp = el("button", { class: "ed-ctl link", title: "上へ", onclick: () => {
+    if (si > 0) { const t = D.customSections[si - 1]; D.customSections[si - 1] = sec; D.customSections[si] = t; render(); }
+  } }, "↑");
+  const moveDown = el("button", { class: "ed-ctl link", title: "下へ", onclick: () => {
+    if (si < D.customSections.length - 1) { const t = D.customSections[si + 1]; D.customSections[si + 1] = sec; D.customSections[si] = t; render(); }
+  } }, "↓");
+
+  return el("section", { class: "ed-item", style: "padding-top:0;" },
+    controls(moveUp, moveDown, ctlDel(() => { D.customSections.splice(si, 1); render(); })),
+    el("div", { style: "display:flex; align-items:baseline; gap:12px; margin-bottom:20px;" },
+      editable("h2", { style: "margin:0;" }, sec, "title", { placeholder: "セクション名" }),
+      editable("span", { class: "eyebrow" }, sec, "eyebrow", { placeholder: "LABEL" })),
+    card);
+}
+
+// ============================================================
+// 地域ページの描画
+// ============================================================
+function renderRegion(canvas, key) {
+  const hero = siteData.regionHero[key];
+  canvas.appendChild(el("div", { class: "hero" },
+    editable("span", { class: "eyebrow" }, hero, "en"),
+    editable("h1", {}, hero, "jp"),
+    editable("p", {}, hero, "intro")));
+
+  const list = el("div", { class: "research-list" });
+  const items = researchData[key] || (researchData[key] = []);
+  if (items.length === 0) {
+    list.appendChild(el("div", { class: "research-empty" }, "まだ研究がありません。下の「＋ 研究を追加」から登録できます。"));
+  }
+  items.forEach((item, i) => {
+    list.appendChild(el("div", { class: "research-card ed-item" },
+      controls(
+        ctlLink(() => { const u = promptUrl(item.url); if (u !== null) item.url = u; }),
+        ctlDel(() => { items.splice(i, 1); render(); })),
+      editable("h3", {}, item, "title", { placeholder: "研究のタイトル" }),
+      editable("p", {}, item, "desc", { placeholder: "研究の説明文" }),
+      el("span", { class: "research-link" }, "研究ページを見る → ", el("small", { style: "color:#9aa1af; font-weight:400;" }, item.url ? "(リンク先: " + item.url + ")" : "(🔗ボタンでリンク先を設定)"))));
+  });
+
+  canvas.appendChild(el("section", {},
+    el("h2", {}, "研究一覧"),
+    el("p", { class: "section-lead" }, "メンバーが取り組んでいる研究の一覧です。カードの🔗ボタンで、別のホームページビルダーで作った研究ページのURLを設定できます。"),
+    list,
+    el("button", { class: "ed-add", onclick: () => { items.push({ title: "", desc: "", url: "" }); render(); } }, "＋ 研究を追加")));
+}
+
+// ============================================================
+// 全体描画
+// ============================================================
+function render() {
+  renderPageTabs();
+  const canvas = document.getElementById("canvas");
+  canvas.innerHTML = "";
+  canvas.appendChild(siteHeader());
+  if (currentPage === "home") renderHome(canvas);
+  else renderRegion(canvas, currentPage);
+  canvas.appendChild(siteFooter());
+}
+
+// ============================================================
+// ファイル読み込み
 // ============================================================
 function loadJsFile(inputEl, globalName, onLoaded) {
   inputEl.addEventListener("change", () => {
@@ -444,282 +634,61 @@ function loadJsFile(inputEl, globalName, onLoaded) {
     reader.onload = () => {
       try {
         const fn = new Function("window", reader.result + "; return window." + globalName + ";");
-        const fakeWindow = {};
-        const result = fn(fakeWindow);
+        const result = fn({});
         if (result) {
           onLoaded(result);
-          document.getElementById("load-status").textContent = "読み込みました ✓";
+          document.getElementById("status").textContent = "読み込み完了 ✓";
+          render();
         }
       } catch (e) {
-        alert("読み込みに失敗しました。ファイルの中身が壊れていないか確認してください。\n" + e.message);
+        alert("読み込みに失敗しました: " + e.message);
       }
     };
     reader.readAsText(file);
   });
 }
-
-loadJsFile(document.getElementById("load-site"), "SITE_DATA", (data) => {
-  siteData = data;
-  renderAll();
+loadJsFile(document.getElementById("load-site"), "SITE_DATA", (d) => {
+  if (!d.customSections) d.customSections = [];
+  siteData = d;
 });
-loadJsFile(document.getElementById("load-research"), "RESEARCH_DATA", (data) => {
-  researchData = data;
-  renderResearchForm();
-});
+loadJsFile(document.getElementById("load-research"), "RESEARCH_DATA", (d) => { researchData = d; });
 
 // ============================================================
-// ホームタブ描画
+// 保存(2ファイルをダウンロード)
 // ============================================================
-function renderAll() {
-  document.getElementById("hero-eyebrow").value = siteData.hero.eyebrow;
-  document.getElementById("hero-title").value = siteData.hero.title;
-  document.getElementById("hero-body").value = siteData.hero.body;
-  document.getElementById("overview-lead").value = siteData.overview.lead;
-  document.getElementById("activities-note").value = siteData.activities.note;
-  document.getElementById("join-note").value = siteData.join.note;
-
-  renderNewsItems();
-  renderExamples();
-  renderPillars();
-  renderExtras();
-  renderContacts();
-  renderRegionTabs();
-  renderResearchRegionTabs();
-  renderResearchForm();
-}
-
-function bindInput(id, obj, key) {
-  document.getElementById(id).addEventListener("input", (e) => { obj[key] = e.target.value; });
-}
-
-function renderNewsItems() {
-  const el = document.getElementById("news-items");
-  el.innerHTML = "";
-  siteData.news.forEach((item, i) => {
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.innerHTML =
-      '<button class="remove-btn" onclick="removeNews(' + i + ')">削除</button>' +
-      '<label class="field-label">日付</label><input type="text" data-i="' + i + '" data-f="date" class="news-date-input">' +
-      '<label class="field-label">タイトル</label><input type="text" data-i="' + i + '" data-f="title" class="news-title-input">';
-    el.appendChild(div);
-    div.querySelector(".news-date-input").value = item.date;
-    div.querySelector(".news-title-input").value = item.title;
-    div.querySelector(".news-date-input").addEventListener("input", (e) => { siteData.news[i].date = e.target.value; });
-    div.querySelector(".news-title-input").addEventListener("input", (e) => { siteData.news[i].title = e.target.value; });
-  });
-}
-function addNewsItem() { siteData.news.push({ date: "", title: "" }); renderNewsItems(); }
-function removeNews(i) { siteData.news.splice(i, 1); renderNewsItems(); }
-
-function renderExamples() {
-  const el = document.getElementById("overview-examples");
-  el.innerHTML = "";
-  siteData.overview.examples.forEach((text, i) => {
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.innerHTML =
-      '<button class="remove-btn" onclick="removeExample(' + i + ')">削除</button>' +
-      '<textarea class="ex-input"></textarea>';
-    el.appendChild(div);
-    div.querySelector(".ex-input").value = text;
-    div.querySelector(".ex-input").addEventListener("input", (e) => { siteData.overview.examples[i] = e.target.value; });
-  });
-}
-function addExample() { siteData.overview.examples.push(""); renderExamples(); }
-function removeExample(i) { siteData.overview.examples.splice(i, 1); renderExamples(); }
-
-function renderPillars() {
-  const el = document.getElementById("pillars");
-  el.innerHTML = "";
-  siteData.activities.pillars.forEach((p, i) => {
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.innerHTML =
-      '<label class="field-label">短いラベル(例: たのしく)</label><input type="text" class="p-kicker">' +
-      '<label class="field-label">見出し(例: 発見)</label><input type="text" class="p-label">' +
-      '<label class="field-label">説明文</label><textarea class="p-body"></textarea>';
-    el.appendChild(div);
-    div.querySelector(".p-kicker").value = p.kicker;
-    div.querySelector(".p-label").value = p.label;
-    div.querySelector(".p-body").value = p.body;
-    div.querySelector(".p-kicker").addEventListener("input", (e) => { siteData.activities.pillars[i].kicker = e.target.value; });
-    div.querySelector(".p-label").addEventListener("input", (e) => { siteData.activities.pillars[i].label = e.target.value; });
-    div.querySelector(".p-body").addEventListener("input", (e) => { siteData.activities.pillars[i].body = e.target.value; });
-  });
-}
-
-function renderExtras() {
-  const el = document.getElementById("extras");
-  el.innerHTML = "";
-  siteData.activities.extra.forEach((ex, i) => {
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.innerHTML =
-      '<button class="remove-btn" onclick="removeExtra(' + i + ')">削除</button>' +
-      '<label class="field-label">前置き(例: みんなで)</label><input type="text" class="e-lead">' +
-      '<label class="field-label">内容</label><input type="text" class="e-highlight">';
-    el.appendChild(div);
-    div.querySelector(".e-lead").value = ex.lead;
-    div.querySelector(".e-highlight").value = ex.highlight;
-    div.querySelector(".e-lead").addEventListener("input", (e) => { siteData.activities.extra[i].lead = e.target.value; });
-    div.querySelector(".e-highlight").addEventListener("input", (e) => { siteData.activities.extra[i].highlight = e.target.value; });
-  });
-}
-function addExtra() { siteData.activities.extra.push({ lead: "", highlight: "" }); renderExtras(); }
-function removeExtra(i) { siteData.activities.extra.splice(i, 1); renderExtras(); }
-
-function renderContacts() {
-  const el = document.getElementById("contacts");
-  el.innerHTML = "";
-  siteData.contact.forEach((c, i) => {
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.innerHTML =
-      '<button class="remove-btn" onclick="removeContact(' + i + ')">削除</button>' +
-      '<label class="field-label">名称(例: Email)</label><input type="text" class="c-label">' +
-      '<label class="field-label">表示テキスト</label><input type="text" class="c-value">' +
-      '<label class="field-label">リンク先URL</label><input type="text" class="c-url">';
-    el.appendChild(div);
-    div.querySelector(".c-label").value = c.label;
-    div.querySelector(".c-value").value = c.value;
-    div.querySelector(".c-url").value = c.url || "";
-    div.querySelector(".c-label").addEventListener("input", (e) => { siteData.contact[i].label = e.target.value; });
-    div.querySelector(".c-value").addEventListener("input", (e) => { siteData.contact[i].value = e.target.value; });
-    div.querySelector(".c-url").addEventListener("input", (e) => { siteData.contact[i].url = e.target.value; });
-  });
-}
-function addContact() { siteData.contact.push({ label: "", value: "", url: "" }); renderContacts(); }
-function removeContact(i) { siteData.contact.splice(i, 1); renderContacts(); }
-
-bindInput("hero-eyebrow", siteData.hero, "eyebrow");
-bindInput("hero-title", siteData.hero, "title");
-bindInput("hero-body", siteData.hero, "body");
-bindInput("overview-lead", siteData.overview, "lead");
-bindInput("activities-note", siteData.activities, "note");
-bindInput("join-note", siteData.join, "note");
-
-// ============================================================
-// 地域ページタブ
-// ============================================================
-function renderRegionTabs() {
-  const el = document.getElementById("region-tabs");
-  el.innerHTML = "";
-  REGION_KEYS.forEach((key) => {
-    const btn = document.createElement("button");
-    btn.textContent = REGION_LABELS[key];
-    if (key === currentRegionTab) btn.classList.add("active");
-    btn.addEventListener("click", () => { currentRegionTab = key; renderRegionTabs(); renderRegionForm(); });
-    el.appendChild(btn);
-  });
-  renderRegionForm();
-}
-
-function renderRegionForm() {
-  const el = document.getElementById("region-form");
-  const key = currentRegionTab;
-  const hero = siteData.regionHero[key];
-  const card = siteData.regionCards[key];
-  el.innerHTML =
-    '<label class="field-label">英字ラベル(例: ASIA)</label><input type="text" id="rh-en">' +
-    '<label class="field-label">見出し(例: アジア)</label><input type="text" id="rh-jp">' +
-    '<label class="field-label">地域ページの紹介文</label><textarea id="rh-intro"></textarea>' +
-    '<label class="field-label">トップページのカードに出る説明文(短め)</label><textarea id="rc-desc"></textarea>';
-  document.getElementById("rh-en").value = hero.en;
-  document.getElementById("rh-jp").value = hero.jp;
-  document.getElementById("rh-intro").value = hero.intro;
-  document.getElementById("rc-desc").value = card.desc;
-  document.getElementById("rh-en").addEventListener("input", (e) => { hero.en = e.target.value; });
-  document.getElementById("rh-jp").addEventListener("input", (e) => { hero.jp = e.target.value; card.title = e.target.value; });
-  document.getElementById("rh-intro").addEventListener("input", (e) => { hero.intro = e.target.value; });
-  document.getElementById("rc-desc").addEventListener("input", (e) => { card.desc = e.target.value; });
-}
-
-// ============================================================
-// 研究一覧タブ
-// ============================================================
-function renderResearchRegionTabs() {
-  const el = document.getElementById("research-region-tabs");
-  el.innerHTML = "";
-  REGION_KEYS.forEach((key) => {
-    const btn = document.createElement("button");
-    btn.textContent = REGION_LABELS[key];
-    if (key === currentResearchTab) btn.classList.add("active");
-    btn.addEventListener("click", () => { currentResearchTab = key; renderResearchRegionTabs(); });
-    el.appendChild(btn);
-  });
-}
-
-function renderResearchForm() {
-  const el = document.getElementById("research-form");
-  el.innerHTML = "";
-  const key = currentResearchTab;
-  const items = researchData[key] || (researchData[key] = []);
-  if (items.length === 0) {
-    el.innerHTML = '<p style="font-size:13px;color:#9aa1af;">まだこの地域には研究が登録されていません。「＋ この地域に研究を追加」から追加してください。</p>';
-  }
-  items.forEach((item, i) => {
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.innerHTML =
-      '<button class="remove-btn" onclick="removeResearch(' + i + ')">削除</button>' +
-      '<label class="field-label">タイトル</label><input type="text" class="r-title">' +
-      '<label class="field-label">説明文</label><textarea class="r-desc"></textarea>' +
-      '<label class="field-label">研究ページのURL</label><input type="text" class="r-url">';
-    el.appendChild(div);
-    div.querySelector(".r-title").value = item.title;
-    div.querySelector(".r-desc").value = item.desc;
-    div.querySelector(".r-url").value = item.url;
-    div.querySelector(".r-title").addEventListener("input", (e) => { item.title = e.target.value; });
-    div.querySelector(".r-desc").addEventListener("input", (e) => { item.desc = e.target.value; });
-    div.querySelector(".r-url").addEventListener("input", (e) => { item.url = e.target.value; });
-  });
-}
-function addResearchItem() {
-  const key = currentResearchTab;
-  if (!researchData[key]) researchData[key] = [];
-  researchData[key].push({ title: "", desc: "", url: "" });
-  renderResearchForm();
-}
-function removeResearch(i) {
-  researchData[currentResearchTab].splice(i, 1);
-  renderResearchForm();
-}
-
-// ============================================================
-// ファイル書き出し
-// ============================================================
-function jsStr(s) {
-  return JSON.stringify(s || "");
-}
+function jsStr(s) { return JSON.stringify(s || ""); }
 
 function buildSiteDataJs() {
   const d = siteData;
-  let out = "/* site-data.js — サイト編集ツール(editor.html)で生成 */\n\nwindow.SITE_DATA = {\n";
+  let out = "/* site-data.js — ビジュアル編集ツール(editor.html)で生成 */\n\nwindow.SITE_DATA = {\n";
   out += "  hero: { eyebrow: " + jsStr(d.hero.eyebrow) + ", title: " + jsStr(d.hero.title) + ", body: " + jsStr(d.hero.body) + " },\n";
-  out += "  news: [\n" + d.news.map((n) => "    { date: " + jsStr(n.date) + ", title: " + jsStr(n.title) + " }").join(",\n") + "\n  ],\n";
-  out += "  overview: {\n    lead: " + jsStr(d.overview.lead) + ",\n    examples: [\n" +
-    d.overview.examples.map((e) => "      " + jsStr(e)).join(",\n") + "\n    ]\n  },\n";
-  out += "  activities: {\n    pillars: [\n" +
-    d.activities.pillars.map((p) => "      { kicker: " + jsStr(p.kicker) + ", label: " + jsStr(p.label) + ", body: " + jsStr(p.body) + " }").join(",\n") +
-    "\n    ],\n    extra: [\n" +
-    d.activities.extra.map((e) => "      { lead: " + jsStr(e.lead) + ", highlight: " + jsStr(e.highlight) + " }").join(",\n") +
-    "\n    ],\n    note: " + jsStr(d.activities.note) + "\n  },\n";
+  out += "  news: [\n" + d.news.map((n) => "    { date: " + jsStr(n.date) + ", title: " + jsStr(n.title) + ", url: " + jsStr(n.url || "#") + " }").join(",\n") + "\n  ],\n";
+  out += "  customSections: [\n" + d.customSections.map((s) => {
+    const blocks = (s.blocks || []).map((b) => {
+      if (b.type === "heading") return '      { type: "heading", text: ' + jsStr(b.text) + " }";
+      if (b.type === "text") return '      { type: "text", html: ' + jsStr(b.html) + " }";
+      if (b.type === "image") return '      { type: "image", url: ' + jsStr(b.url) + ", caption: " + jsStr(b.caption) + " }";
+      if (b.type === "divider") return '      { type: "divider" }';
+      if (b.type === "button") return '      { type: "button", label: ' + jsStr(b.label) + ", url: " + jsStr(b.url) + " }";
+      return "";
+    }).filter(Boolean).join(",\n");
+    return "    { title: " + jsStr(s.title) + ", eyebrow: " + jsStr(s.eyebrow) + ", blocks: [\n" + blocks + "\n    ] }";
+  }).join(",\n") + "\n  ],\n";
+  out += "  overview: {\n    lead: " + jsStr(d.overview.lead) + ",\n    examples: [\n" + d.overview.examples.map((e) => "      " + jsStr(e)).join(",\n") + "\n    ]\n  },\n";
+  out += "  activities: {\n    pillars: [\n" + d.activities.pillars.map((p) => "      { kicker: " + jsStr(p.kicker) + ", label: " + jsStr(p.label) + ", body: " + jsStr(p.body) + " }").join(",\n") + "\n    ],\n    extra: [\n" + d.activities.extra.map((e) => "      { lead: " + jsStr(e.lead) + ", highlight: " + jsStr(e.highlight) + " }").join(",\n") + "\n    ],\n    note: " + jsStr(d.activities.note) + "\n  },\n";
   out += "  join: { note: " + jsStr(d.join.note) + " },\n";
   out += "  contact: [\n" + d.contact.map((c) => "    { label: " + jsStr(c.label) + ", value: " + jsStr(c.value) + ", url: " + jsStr(c.url) + " }").join(",\n") + "\n  ],\n";
   out += "  regionCards: {\n" + REGION_KEYS.map((k) => "    " + k + ": { title: " + jsStr(d.regionCards[k].title) + ", desc: " + jsStr(d.regionCards[k].desc) + " }").join(",\n") + "\n  },\n";
-  out += "  regionHero: {\n" + REGION_KEYS.map((k) => "    " + k + ": { en: " + jsStr(d.regionHero[k].en) + ", jp: " + jsStr(d.regionHero[k].jp) + ", intro: " + jsStr(d.regionHero[k].intro) + " }").join(",\n") + "\n  }\n";
-  out += "};\n";
+  out += "  regionHero: {\n" + REGION_KEYS.map((k) => "    " + k + ": { en: " + jsStr(d.regionHero[k].en) + ", jp: " + jsStr(d.regionHero[k].jp) + ", intro: " + jsStr(d.regionHero[k].intro) + " }").join(",\n") + "\n  }\n};\n";
   return out;
 }
 
 function buildResearchDataJs() {
-  let out = "/* research-data.js — サイト編集ツール(editor.html)で生成 */\n\nwindow.RESEARCH_DATA = {\n\n";
+  let out = "/* research-data.js — ビジュアル編集ツール(editor.html)で生成 */\n\nwindow.RESEARCH_DATA = {\n\n";
   out += REGION_KEYS.map((key) => {
     const items = researchData[key] || [];
     if (items.length === 0) return "  " + key + ": [\n  ],";
-    const rows = items.map((it) => "    { title: " + jsStr(it.title) + ", desc: " + jsStr(it.desc) + ", url: " + jsStr(it.url) + " },").join("\n");
-    return "  " + key + ": [\n" + rows + "\n  ],";
+    return "  " + key + ": [\n" + items.map((it) => "    { title: " + jsStr(it.title) + ", desc: " + jsStr(it.desc) + ", url: " + jsStr(it.url) + " },").join("\n") + "\n  ],";
   }).join("\n\n");
   out += "\n\n};\n";
   return out;
@@ -735,8 +704,13 @@ function downloadFile(filename, content) {
   URL.revokeObjectURL(url);
 }
 
-// 初期表示
-renderAll();
+function downloadAll() {
+  downloadFile("site-data.js", buildSiteDataJs());
+  setTimeout(() => downloadFile("research-data.js", buildResearchDataJs()), 400);
+  document.getElementById("status").textContent = "ダウンロードしました ✓";
+}
+
+render();
 </script>
 
 </body>
