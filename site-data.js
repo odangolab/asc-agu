@@ -1,9 +1,9 @@
 /* site-data.js — ビジュアル編集ツール(editor.html)で生成 */
 
 window.SITE_DATA = {
-  hero: { eyebrow: "Area Studies CLUB", title: "世界を知ることへの\nワクワクと、楽しさを。", body: "世界に存在する" },
+  hero: { eyebrow: "Area Studies", title: "世界を知ることへの ワクワクと、楽しさを。", body: "地域研究愛好会（ASC）では、日本や世界の地域に対する見識を互いに深め、好奇心を刺激しあえるコミュニティの形成を目指します。\n各々の興味関心に従い、未知の世界を切り拓く意欲がある方を歓迎します。" },
   news: [
-    { date: "7/19", title: "ホームページ開設いたしました", url: "#" }
+    { date: "7/3", title: "ホームページ開設いたしました", url: "#" }
   ],
   customSections: [
 
@@ -20,19 +20,19 @@ window.SITE_DATA = {
   },
   activities: {
     pillars: [
-      { kicker: "たのしく", label: "発見", body: "世界にはどんな景色・街並み・文化があるか、地理推理ゲームのGeoGuessrを通して発見しよう。また、外部のプレゼンターによる「ミニ講演会」を通して現地のリアルを探ろう！" },
-      { kicker: "個人or グループで", label: "探求", body: "興味関心に従って自由にテーマを設定し、個人またはグループで様々な方法を通じて「ミニ研究」をしよう！" },
-      { kicker: "様々な方法で", label: "発信", body: "SNSでの投稿やミニ発表会を通して、研究の成果を発表しよう！また、オリジナルグッズ販売など様々な方法で、周囲を巻き込み楽しく発信しよう！" }
+      { kicker: "たのしく", label: "発見", body: "世界にはどんな景色・街並み・文化があるか、地理推理ゲームのGeoGuessrを通して発見しよう。また、外部のプレゼンターによる「ミニ講演会」を通して現地のリアルを探ろう。" },
+      { kicker: "個人or グループで", label: "探求", body: "興味関心に従って自由にテーマを設定し、個人またはグループで様々な方法を通じて「ミニ研究」をしよう。" },
+      { kicker: "様々な方法で", label: "発信", body: "SNSでの投稿やミニ発表会を通して、研究の成果を発表しよう。また、オリジナルグッズ販売など様々な方法で、周囲を巻き込み楽しく発信しよう。" }
     ],
     extra: [
-      { lead: "外国語の勉強会を開催したり\n外国料理を食べに行ったり…", highlight: "多岐にわたる活動を実施しています！" }
+      { lead: "外国語の勉強会を開催したり 外国料理を食べに行ったり", highlight: "多岐にわたる活動を実施しています" }
     ],
     note: ""
   },
-  join: { note: "ご質問や入会希望は公式LINEへ。\nInstagramでも情報発信をしております。\n是非フォロー・登録よろしくお願いいたします。" },
+  join: { note: "ご質問や入会希望は公式LINEへ。\n Instagramでも情報発信をしております。 \n是非フォロー・登録よろしくお願いいたします。" },
   contact: [
-    { label: "公式LINE", value: "https://lin.ee/YjuVmVj", url: "https://lin.ee/YjuVmVj" },
-    { label: "X (Twitter)", value: "準備中", url: "#" },
+    { label: "Email", value: "https://lin.ee/YjuVmVj", url: "https://lin.ee/YjuVmVj" },
+    { label: "X (Twitter)", value: "@asc.agu", url: "#" },
     { label: "Instagram", value: "@asc.agu", url: "#" }
   ],
   regionCards: {
@@ -43,10 +43,10 @@ window.SITE_DATA = {
     america: { title: "アメリカ", desc: "" }
   },
   regionHero: {
-    asia: { en: "ASIA", jp: "アジア", intro: "" },
-    oceania: { en: "OCEANIA", jp: "オセアニア", intro: "" },
-    europe: { en: "EUROPE", jp: "ヨーロッパ", intro: "" },
-    africa: { en: "AFRICA", jp: "アフリカ", intro: "" },
-    america: { en: "AMERICA", jp: "アメリカ", intro: "" }
+    asia: { en: "ASIA", jp: "アジア", intro: "東アジア・東南アジア・南アジアを中心に、歴史的背景や現代社会の動きを比較しながら学びます。" },
+    oceania: { en: "OCEANIA", jp: "オセアニア", intro: "島嶼国家群の文化的多様性と、先住民族の伝統・現代における課題を扱います。" },
+    europe: { en: "EUROPE", jp: "ヨーロッパ", intro: "国家間の統合と多様な国民文化の共存という視点から、政治・社会・文化を横断的に学びます。" },
+    africa: { en: "AFRICA", jp: "アフリカ", intro: "多様な民族・言語・歴史を持つ大陸を、植民地史から現代の開発課題まで幅広く扱います。" },
+    america: { en: "AMERICA", jp: "アメリカ", intro: "北米・中南米を対象に、移民社会の形成や地域統合、文化的多様性について学びます。" }
   }
 };
